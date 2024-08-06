@@ -1,7 +1,5 @@
 # 개발환경
 
----
-
 1. IDE: IntelliJ IDEA
 2. Spring Boot 3.3.2
 3. JDK 21
@@ -18,6 +16,8 @@
 4. 글 수정 `(/board/update/{id})`
 5. 글 삭제 `(/board/delete/{id})`
 6. 페이징 처리 `(/board/paging)`
+
+<br>
 
 ---
 코딩레시피 - 스프링부트 게시판 프로젝트 참고<br/>
