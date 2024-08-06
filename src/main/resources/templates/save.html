@@ -6,5 +6,16 @@
 </head>
 <body>
 
+<!-- name에 설정된 이름으로 내용이 서버쪽에 전달된다. -->
+<!-- action 속성: 목적지, method 속성: http request method(get, post) -->
+<form action="/board/save" method="post">
+    writer: <input type="text" name="boardWriter"> <br>
+    pass: <input type="text" name="boardPass"> <br>
+    title: <input type="text" name="boardTitle"> <br>
+    contents: <textarea name="boardContents" cols="30" rows="10"></textarea> <br>
+    <input type="submit" value="글작성">
+    <input type="text" name="boardHits" value="0" style="display: none">
+</form>
+
 </body>
 </html>
