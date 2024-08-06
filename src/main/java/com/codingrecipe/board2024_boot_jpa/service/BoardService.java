@@ -5,9 +5,11 @@ import com.codingrecipe.board2024_boot_jpa.entity.BoardEntity;
 import com.codingrecipe.board2024_boot_jpa.repository.BoardRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -36,5 +38,19 @@ public class BoardService {
             boardDTOList.add(BoardDTO.toBoardDTO(boardEntity));
 
         return boardDTOList;
+    }
+
+    // 수동적인 쿼리 실행에는 트랜잭션 어노테이션을 추가해야 한다.
+    @Transactional
+    public void updateHits(Long id) {
+        boardRepository.updateHits(id);
+    }
+
+    public BoardDTO findById(Long id) {
+        Optional<BoardEntity> optionalBoardEntity = boardRepository.findById(id);
+        if (optionalBoardEntity.isPresent())
+            return BoardDTO.toBoardDTO(optionalBoardEntity.get());
+
+        return null;
     }
 }
