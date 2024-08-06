@@ -53,4 +53,12 @@ public class BoardService {
 
         return null;
     }
+
+    public BoardDTO update(BoardDTO boardDTO) {
+        // id 값이 존재한 상태로 엔티티 객체를 save하면
+        // JPA는 save가 아닌 update로 인식하여 update 쿼리를 보냄
+        boardRepository.save(BoardEntity.toUpdateEntity(boardDTO));
+
+        return findById(boardDTO.id());
+    }
 }
