@@ -1,5 +1,7 @@
 package com.codingrecipe.board2024_boot_jpa.dto;
 
+import com.codingrecipe.board2024_boot_jpa.entity.BoardEntity;
+
 import java.time.LocalDateTime;
 
 // DTO (Data Transfer Object), [VO, Bean]
@@ -15,7 +17,15 @@ public record BoardDTO(
         int boardHits,
         LocalDateTime boardCreatedTime,
         LocalDateTime boardUpdatedTime
-) {}
+) {
+    public static BoardDTO toBoardDTO(BoardEntity boardEntity) {
+        BoardDTO boardDTO = new BoardDTO(boardEntity.getId(), boardEntity.getBoardWriter(),
+                boardEntity.getBoardPass(), boardEntity.getBoardTitle(), boardEntity.getBoardContents(),
+                boardEntity.getBoardHits(), boardEntity.getCreatedTime(), boardEntity.getUpdatedTime());
+
+        return boardDTO;
+    }
+}
 
 /*
 // Lombok을 사용하면 데이터의 필드만 정의해주면 되므로 개발에 상당한 이점을 얻을 수 있다.

@@ -4,7 +4,10 @@ import com.codingrecipe.board2024_boot_jpa.dto.BoardDTO;
 import com.codingrecipe.board2024_boot_jpa.service.BoardService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
@@ -29,5 +32,15 @@ public class BoardController {
         boardService.save(boardDTO);
 
         return "index";
+    }
+
+    @GetMapping("/")
+    public String findAll(Model model) {
+        // DB -> 전체 게시물 데이터를 가져옴 -> list.html에 넘겨 보여줌
+
+        List<BoardDTO> boardDTOList = boardService.findAll();
+        // View에게 전달하기 위해 model에 글 전체 목록을 읽어와 담음.
+        model.addAttribute("boardList", boardDTOList);
+        return "list";
     }
 }
