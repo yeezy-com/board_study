@@ -10,10 +10,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.io.File;
+import java.io.IOException;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -21,7 +22,7 @@ public class BoardService {
 
     private final BoardRepository boardRepository;
 
-    public void save(BoardDTO boardDTO) {
+    public void save(BoardDTO boardDTO) throws IOException {
         // repository는 Entity 클래스만 받는다.
         // DTO -> Entity 혹은 Entity -> DTO 변환 과정이 필요
         // 권고사항 - Entity 클래스는 DB와 깊은 연관이 있으므로 View 단으로 노출을 시키지마라.
@@ -30,8 +31,31 @@ public class BoardService {
         // DTO -> Entity (Entity Class에서)
         // Entity -> DTO (DTO Class에서)
 
-        BoardEntity saveEntity = BoardEntity.toSaveEntity(boardDTO);
-        boardRepository.save(saveEntity);
+        // 파일 첨부 여부에 따라 로직을 분리해야 함.
+        if (boardDTO.boardFile().isEmpty()) {
+            // 첨부 파일이 없는 경우
+            BoardEntity saveEntity = BoardEntity.toSaveEntity(boardDTO);
+            boardRepository.save(saveEntity);
+        } else {
+            // 첨부 파일이 있는 경우
+            /*
+                1. DTO에 담긴 파일을 꺼냄
+                2. 파일의 이름을 가져옴
+                3. 서버 저장용 이름을 만듦
+                4. 저장 경로 설정
+                5. 해당 경로에 파일 저장
+                6. board_table에 해당 데이터 save 처리
+                7. board_file_table에 해당 데이터 save 처리
+             */
+
+            Map<String, String> env = System.getenv();
+            MultipartFile boardFile = boardDTO.boardFile(); // 1.
+            String originalFilename = boardFile.getOriginalFilename(); // 2.
+            String storedFileName = UUID.randomUUID().toString() + "_" + originalFilename; // 3.
+            String savePath = "/Users/" + env.get("path") + "/Pictures/spring_pic/" + storedFileName; // 4.
+
+            boardFile.transferTo(new File(savePath)); // 5.
+        }
     }
 
     public List<BoardDTO> findAll() {
