@@ -90,5 +90,21 @@ public class BoardController {
     public String paging(@PageableDefault(page = 1) Pageable pageable, Model model) {
         // pageable.getPageNumber();
         Page<BoardDTO> boardList = boardService.paging(pageable);
+        int blockLimit = 3;
+        int startPage = (((int)(Math.ceil((double)pageable.getPageNumber() / blockLimit))) - 1) * blockLimit + 1; // 1 4 7 10
+        int endPage = ((startPage + blockLimit - 1) < boardList.getTotalPages()) ? startPage + blockLimit - 1 : boardList.getTotalPages();
+
+        // page 개수가 20개가 있다면, 글 개수는 60개
+        // 현재 사용자가 3페이지를 보고 있다면?
+        // 어떤 웹 사이트는 1 2 |3| 4 5 와 같이 표현함.
+        // 강의에선 3개씩 페이지 번호를 보여줄 것.
+        // 1 2 3
+        // 7 8 9
+
+        model.addAttribute("boardList", boardList);
+        model.addAttribute("startPage", startPage);
+        model.addAttribute("endPage", endPage);
+
+        return "paging";
     }
 }
