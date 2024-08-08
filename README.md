@@ -23,7 +23,24 @@
    - `/board/paging?page=2`
    - `/board/paging/2`
      - 페이지에 보여지는 게시글은 항상 다르다.
-     - 그래서, 페이징을 rest api가 아닌 쿼리 스트링으로 넘김 
+     - 그래서, 페이징을 rest api가 아닌 쿼리 스트링으로 넘김
+7. 파일(이미지) 첨부하기
+   - 단일 파일 첨부
+   - 다중 파일 첨부
+   - 파일 첨부와 관련하여 추가될 부분들
+     - save.html
+       - 글 작성 시 이미지 첨부
+     - BoardDTO
+       - 글 작성 후 서버에 전달
+     - BoardService.save()
+       - 파일을 체크하고, DB에 저장
+     - BoardEntity
+       - 파일과 관련된 컬럼 추가
+     - BoardFileEntity, BoardFileRepository 추가
+       - 파일 자체는 디렉토리에 저장되고, DB에는 파일의 이름이 저장 됨
+       - 파일의 이름을 관리하는 엔티티.
+     - detail.html
+       - 이미지를 글 상세화면에서 보여주기
 
 <br>
 
