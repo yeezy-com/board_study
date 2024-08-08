@@ -18,9 +18,9 @@ public record BoardDTO(
         LocalDateTime boardCreatedTime,
         LocalDateTime boardUpdatedTime
 ) {
-    public BoardDTO(Long id, String boardWriter, String boardTitle, int boardHits, LocalDateTime boardCreatedTime) {
-        this(id, boardWriter, "", boardTitle, "", boardHits, boardCreatedTime, null);
-    }
+//    public BoardDTO(Long id, String boardWriter, String boardTitle, int boardHits, LocalDateTime boardCreatedTime) {
+//        this(id, boardWriter, "", boardTitle, "", boardHits, boardCreatedTime, null);
+//    }
 
     public static BoardDTO toBoardDTO(BoardEntity boardEntity) {
         BoardDTO boardDTO = new BoardDTO(boardEntity.getId(), boardEntity.getBoardWriter(),
