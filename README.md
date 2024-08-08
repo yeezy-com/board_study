@@ -20,6 +20,10 @@
    - 수정 처리
 5. 글 삭제 `(/board/delete/{id})`
 6. 페이징 처리 `(/board/paging)`
+   - `/board/paging?page=2`
+   - `/board/paging/2`
+     - 페이지에 보여지는 게시글은 항상 다르다.
+     - 그래서, 페이징을 rest api가 아닌 쿼리 스트링으로 넘김 
 
 <br>
 

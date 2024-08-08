@@ -4,6 +4,10 @@ import com.codingrecipe.board2024_boot_jpa.dto.BoardDTO;
 import com.codingrecipe.board2024_boot_jpa.entity.BoardEntity;
 import com.codingrecipe.board2024_boot_jpa.repository.BoardRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -64,5 +68,16 @@ public class BoardService {
 
     public void delete(Long id) {
         boardRepository.deleteById(id);
+    }
+
+    public Page<BoardDTO> paging(Pageable pageable) {
+        int page = pageable.getPageNumber() - 1; // 1빼는 이유? page 값이 0부터 시작함.
+        int pageLimit = 3; // 한 페이지에 보여줄 글 개수
+
+        // 한 페이지 당 3개씩 글을 보여주고, 정렬 기준은 id 기준으로 내림차순 정렬
+        Page<BoardEntity> boardEntities =
+                boardRepository.findAll(PageRequest.of(page, pageLimit, Sort.by(Sort.Direction.DESC, "id")));
+                // page = 보여줄 페이지 넘버, pageLimit = 보여줄 글 개수
+                // id를 기준으로 내림차순으로 페이지 결과를 정렬함. properties에 오는 이름은 Entity에 작성한 이름 기준.
     }
 }
