@@ -48,7 +48,8 @@ public class BoardController {
     }
 
     @GetMapping("/{id}")
-    public String findById(@PathVariable Long id, Model model) {
+    public String findById(@PathVariable Long id, Model model,
+                           @PageableDefault(page = 1) Pageable pageable) {
         /*
             게시글 조회 시 처리할 일
             1. 해당 게시글의 조회수 1 증가
@@ -58,7 +59,7 @@ public class BoardController {
         boardService.updateHits(id); // 1. 과정
         BoardDTO boardDTO = boardService.findById(id); // 2. 과정
         model.addAttribute("board", boardDTO);
-
+        model.addAttribute("page", pageable.getPageNumber());
         return "detail";
     }
 

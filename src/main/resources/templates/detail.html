@@ -42,7 +42,7 @@
 <script th:inline="javascript">
     const listReq = () => {
         console.log("목록 요청");
-        location.href = "/board/";
+        location.href = "/board/paging?page=" + [[${page}]];
     }
 
     const updateReq = () => {
