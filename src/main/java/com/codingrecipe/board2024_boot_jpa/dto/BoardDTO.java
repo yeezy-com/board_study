@@ -34,10 +34,26 @@ public record BoardDTO(
 //    }
 
     public static BoardDTO toBoardDTO(BoardEntity boardEntity) {
-        BoardDTO boardDTO = new BoardDTO(boardEntity.getId(), boardEntity.getBoardWriter(),
-                boardEntity.getBoardPass(), boardEntity.getBoardTitle(), boardEntity.getBoardContents(),
-                boardEntity.getBoardHits(), boardEntity.getCreatedTime(), boardEntity.getUpdatedTime(),
-                null, null, null, 0);
+        BoardDTO boardDTO;
+        if (boardEntity.getFileAttached() == 0) {
+            boardDTO = new BoardDTO(boardEntity.getId(), boardEntity.getBoardWriter(),
+                    boardEntity.getBoardPass(), boardEntity.getBoardTitle(), boardEntity.getBoardContents(),
+                    boardEntity.getBoardHits(), boardEntity.getCreatedTime(), boardEntity.getUpdatedTime(),
+                    null, null, null, 0);
+        } else {
+            // 파일 이름을 가져와야 함.
+            // 근데, 파일 이름은 board_table이 아닌 board_file_table에 있다!!
+            // 우리는 둘의 연관 관계를 설정하였음
+
+            // join
+            // select * from board_table b, board_file_table bf where b.id=bf.board_id
+            // and where b.id=?
+            boardDTO = new BoardDTO(boardEntity.getId(), boardEntity.getBoardWriter(),
+                    boardEntity.getBoardPass(), boardEntity.getBoardTitle(), boardEntity.getBoardContents(),
+                    boardEntity.getBoardHits(), boardEntity.getCreatedTime(), boardEntity.getUpdatedTime(),
+                    null, boardEntity.getBoardFileEntityList().getFirst().getOriginalFileName(),
+                    boardEntity.getBoardFileEntityList().getFirst().getStoredFileName(), 1);
+        }
 
         return boardDTO;
     }

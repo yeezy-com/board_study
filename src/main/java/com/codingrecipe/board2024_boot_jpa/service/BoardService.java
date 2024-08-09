@@ -67,6 +67,7 @@ public class BoardService {
         }
     }
 
+    @Transactional
     public List<BoardDTO> findAll() {
         List<BoardEntity> boardEntityList = boardRepository.findAll();
         List<BoardDTO> boardDTOList = new ArrayList<>();
@@ -83,12 +84,11 @@ public class BoardService {
         boardRepository.updateHits(id);
     }
 
+    @Transactional
     public BoardDTO findById(Long id) {
         Optional<BoardEntity> optionalBoardEntity = boardRepository.findById(id);
-        if (optionalBoardEntity.isPresent())
-            return BoardDTO.toBoardDTO(optionalBoardEntity.get());
+        return optionalBoardEntity.map(BoardDTO::toBoardDTO).orElse(null);
 
-        return null;
     }
 
     public BoardDTO update(BoardDTO boardDTO) {
