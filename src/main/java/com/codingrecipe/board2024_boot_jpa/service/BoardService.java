@@ -2,6 +2,8 @@ package com.codingrecipe.board2024_boot_jpa.service;
 
 import com.codingrecipe.board2024_boot_jpa.dto.BoardDTO;
 import com.codingrecipe.board2024_boot_jpa.entity.BoardEntity;
+import com.codingrecipe.board2024_boot_jpa.entity.BoardFileEntity;
+import com.codingrecipe.board2024_boot_jpa.repository.BoardFileRepository;
 import com.codingrecipe.board2024_boot_jpa.repository.BoardRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -21,6 +23,7 @@ import java.util.*;
 public class BoardService {
 
     private final BoardRepository boardRepository;
+    private final BoardFileRepository boardFileRepository;
 
     public void save(BoardDTO boardDTO) throws IOException {
         // repository는 Entity 클래스만 받는다.
@@ -55,6 +58,12 @@ public class BoardService {
             String savePath = "/Users/" + env.get("path") + "/Pictures/spring_pic/" + storedFileName; // 4.
 
             boardFile.transferTo(new File(savePath)); // 5.
+            BoardEntity boardEntity = BoardEntity.toSaveFileEntity(boardDTO); // 6. 여기는 Id 값이 없기 때문에 아래에서 다시 findById 함
+            Long saveId = boardRepository.save(boardEntity).getId();
+            BoardEntity board = boardRepository.findById(saveId).get();
+
+            BoardFileEntity boardFileEntity = BoardFileEntity.toBoardFileEntity(board, originalFilename, storedFileName);
+            boardFileRepository.save(boardFileEntity); // 7.
         }
     }
 
