@@ -24,8 +24,13 @@ public record BoardDTO(
         // 서버 저장용 이름을 따로 두는 이유는 원본 파일 이름이 중복될 수 있기 때문이다.
         int fileAttached         // 파일 첨부 여부(첨부1, 미첨부0)
 ) {
+
 //    public BoardDTO(Long id, String boardWriter, String boardTitle, int boardHits, LocalDateTime boardCreatedTime) {
-//        this(id, boardWriter, "", boardTitle, "", boardHits, boardCreatedTime, null);
+//        this(id, boardWriter, "", boardTitle, "", boardHits, boardCreatedTime, null, null, "", "", 0);
+//    }
+
+//    public BoardDTO() {
+//        this(null, null, null, 0, null);
 //    }
 
     public static BoardDTO toBoardDTO(BoardEntity boardEntity) {

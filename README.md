@@ -39,6 +39,33 @@
      - BoardFileEntity, BoardFileRepository 추가
        - 파일 자체는 디렉토리에 저장되고, DB에는 파일의 이름이 저장 됨
        - 파일의 이름을 관리하는 엔티티.
+       - board_table(부모) - board_file_table(자식)
+    ```sql
+    create table board_table
+    (
+    id               bigint auto_increment primary key,
+    created_time     datetime     null,
+    updated_time     datetime     null,
+    board_contents   varchar(500) null,
+    board_hits       int          null,
+    board_pass       varchar(255) null,
+    board_title      varchar(255) null,
+    board_writer     varchar(20)  not null,
+    file_attached    int          null
+    );
+   
+    create table board_file_table
+    (
+    id                 bigint auto_increment primary key,
+    created_time       datetime     null,
+    updated_time       datetime     null,
+    original_file_name varchar(255) null,
+    stored_file_name   varchar(255) null,
+    board_id           bigint       null,
+    constraint FKcfxqly70ddd02xbou0jxgh4o3
+        foreign key (board_id) references board_table (id) on delete cascade
+    );
+    ```
      - detail.html
        - 이미지를 글 상세화면에서 보여주기
 

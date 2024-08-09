@@ -5,6 +5,9 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 // DB의 테이블과 매핑하는 역할을 하는 객체이다.
 // 이 엔티티 객체로 인해 DB 테이블을 객체지향적이게 활용할 수 있다.
 @Entity
@@ -34,6 +37,10 @@ public class BoardEntity extends BaseEntity {
 
     @Column
     private int fileAttached; // 1 or 0
+
+    // BoardFileEntity에서 @ManyToOne의 변수 이름과 맞추면 됨
+    @OneToMany(mappedBy = "boardEntity", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<BoardFileEntity> boardFileEntityList = new ArrayList<>();
 
     public static BoardEntity toSaveEntity(BoardDTO boardDTO) {
         BoardEntity boardEntity = new BoardEntity();
